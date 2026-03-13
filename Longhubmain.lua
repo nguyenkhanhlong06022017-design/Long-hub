@@ -1,41 +1,48 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "My First Script Hub",
-   LoadingTitle = "Đang tải dữ liệu...",
+   Name = "Long Hub | Plane Simulator",
+   LoadingTitle = "Đang kiểm tra dữ liệu Game...",
    LoadingSubtitle = "by Gemini AI",
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "GeminiScripts", -- Tên thư mục lưu cài đặt
-      FileName = "MyScript"
-   }
+   ConfigurationSaving = { Enabled = false }
 })
 
-local Tab = Window:CreateTab("Tính năng chính", 4483362458) -- Icon ID
-
-local Button = Tab:CreateButton({
-   Name = "Nhảy cao (Jump Power)",
-   Callback = function()
-      -- Đoạn code xử lý khi bấm nút
-      game.Players.LocalPlayer.Character.Humanoid.JumpPower = 100
-      game.Players.LocalPlayer.Character.Humanoid.UseJumpPower = true
-      Rayfield:Notify({
-         Title = "Thành công!",
-         Content = "Bạn đã kích hoạt Nhảy cao",
-         Duration = 5,
-         Image = 4483362458,
-      })
-   end,
-})
+local Tab = Window:CreateTab("Người chơi", 4483362458)
 
 local Slider = Tab:CreateSlider({
-   Name = "Tốc độ chạy (WalkSpeed)",
-   Range = {16, 200},
+   Name = "Tốc độ chạy",
+   Range = {16, 300},
    Increment = 1,
    Suffix = " Speed",
    CurrentValue = 16,
-   Flag = "Slider1", 
    Callback = function(Value)
       game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
    end,
 })
+
+local SliderJump = Tab:CreateSlider({
+   Name = "Độ cao nhảy",
+   Range = {50, 500},
+   Increment = 1,
+   Suffix = " Power",
+   CurrentValue = 50,
+   Callback = function(Value)
+      game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+      game.Players.LocalPlayer.Character.Humanoid.UseJumpPower = true
+   end,
+})
+
+local TabMisc = Window:CreateTab("Tiện ích", 4483362458)
+
+local ButtonInfinite = TabMisc:CreateButton({
+   Name = "Bật Nhảy Vô Hạn (Fly)",
+   Callback = function()
+      -- Tính năng giúp bạn bay lên cao bằng cách spam nút nhảy
+      game:GetService("UserInputService").JumpRequest:Connect(function()
+          game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
+      end)
+      Rayfield:Notify({Title = "Thông báo", Content = "Đã bật Nhảy vô hạn!", Duration = 3})
+   end,
+})
+
+Rayfield:Notify({Title = "Long Hub", Content = "Chào mừng bạn đến với Plane Simulator!", Duration = 5})
